@@ -67,7 +67,7 @@ true;
   },
 
   unloadModule: moduleName => {
-    return `player.unloadModule(${moduleName});`;
+    return `player.unloadModule(${moduleName}); true;`;
   },
 };
 
