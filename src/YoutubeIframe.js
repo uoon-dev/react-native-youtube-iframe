@@ -16,7 +16,12 @@ import {
   DEFAULT_BASE_URL,
   CUSTOM_USER_AGENT,
 } from './constants';
-import {MAIN_SCRIPT, PLAYER_FUNCTIONS} from './PlayerScripts';
+import {
+  playMode,
+  soundMode,
+  MAIN_SCRIPT,
+  PLAYER_FUNCTIONS,
+} from './PlayerScripts';
 import {deepComparePlayList} from './utils';
 
 const YoutubeIframe = (props, ref) => {
@@ -28,7 +33,6 @@ const YoutubeIframe = (props, ref) => {
     play = false,
     mute = false,
     volume = 100,
-    viewContainerStyle,
     webViewStyle,
     webViewProps,
     useLocalHTML,
@@ -54,18 +58,6 @@ const YoutubeIframe = (props, ref) => {
 
   const webViewRef = useRef(null);
   const eventEmitter = useRef(new EventEmitter());
-
-  const sendPostMessage = useCallback(
-    (eventName, meta) => {
-      if (!playerReady) {
-        return;
-      }
-
-      const message = JSON.stringify({eventName, meta});
-      webViewRef.current.postMessage(message);
-    },
-    [playerReady],
-  );
 
   useImperativeHandle(
     ref,
@@ -131,28 +123,18 @@ const YoutubeIframe = (props, ref) => {
   );
 
   useEffect(() => {
-    if (play) {
-      sendPostMessage('playVideo', {});
-    } else {
-      sendPostMessage('pauseVideo', {});
+    if (!playerReady) {
+      // no instance of player is ready
+      return;
     }
-  }, [play, sendPostMessage]);
 
-  useEffect(() => {
-    if (mute) {
-      sendPostMessage('muteVideo', {});
-    } else {
-      sendPostMessage('unMuteVideo', {});
-    }
-  }, [mute, sendPostMessage]);
-
-  useEffect(() => {
-    sendPostMessage('setVolume', {volume});
-  }, [sendPostMessage, volume]);
-
-  useEffect(() => {
-    sendPostMessage('setPlaybackRate', {playbackRate});
-  }, [sendPostMessage, playbackRate]);
+    [
+      playMode[play],
+      soundMode[mute],
+      PLAYER_FUNCTIONS.setVolume(volume),
+      PLAYER_FUNCTIONS.setPlaybackRate(playbackRate),
+    ].forEach(webViewRef.current.injectJavaScript);
+  }, [play, mute, volume, playbackRate, playerReady]);
 
   useEffect(() => {
     if (!playerReady || lastVideoIdRef.current === videoId) {
@@ -281,7 +263,7 @@ const YoutubeIframe = (props, ref) => {
   }, [useLocalHTML, contentScale, baseUrlOverride, allowWebViewZoom]);
 
   return (
-    <View style={[{height, width}, viewContainerStyle]}>
+    <View style={{height, width}}>
       <WebView
         bounces={false}
         originWhitelist={['*']}
