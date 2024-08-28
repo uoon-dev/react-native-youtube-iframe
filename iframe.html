@@ -178,6 +178,10 @@
             case 'setPlaybackRate':
               player.setPlaybackRate(meta.playbackRate);
               break;
+
+            // case 'unloadModule':
+            //   player.unloadMoule(meta.moduleName);
+            //   break;
           }
         } catch (error) {
           console.error('Error parsing data', event, error);

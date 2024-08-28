@@ -121,6 +121,11 @@ const YoutubeIframe = (props, ref) => {
           PLAYER_FUNCTIONS.seekToScript(seconds, allowSeekAhead),
         );
       },
+      unloadModule: moduleName => {
+        webViewRef.current.injectJavaScript(
+          PLAYER_FUNCTIONS.unloadModule(moduleName),
+        );
+      },
     }),
     [],
   );

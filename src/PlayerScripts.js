@@ -65,6 +65,10 @@ true;
 
     return `player.${func}({videoId: ${JSON.stringify(videoId)}}); true;`;
   },
+
+  unloadModule: moduleName => {
+    return `player.unloadModule(${moduleName});`;
+  },
 };
 
 export const playMode = {
