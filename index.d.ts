@@ -22,11 +22,14 @@ export interface YoutubeIframeRef {
   getDuration: () => Promise<number>;
   getVideoUrl: () => Promise<string>;
   getCurrentTime: () => Promise<number>;
+  getPlayerState: () => Promise<number>;
   isMuted: () => Promise<boolean>;
   getVolume: () => Promise<number>;
   getPlaybackRate: () => Promise<number>;
   getAvailablePlaybackRates: () => Promise<number[]>;
   seekTo: (seconds: number, allowSeekAhead: boolean) => void;
+  playVideo: () => void;
+  pauseVideo: () => void;
   unloadModule: (moduleName: string) => void;
 }
 
