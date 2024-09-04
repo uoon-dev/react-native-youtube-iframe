@@ -3,8 +3,6 @@ import {MUTE_MODE, PAUSE_MODE, PLAY_MODE, UNMUTE_MODE} from './constants';
 export const PLAYER_FUNCTIONS = {
   muteVideo: 'player.mute(); true;',
   unMuteVideo: 'player.unMute(); true;',
-  playVideo: 'player.playVideo(); true;',
-  pauseVideo: 'player.pauseVideo(); true;',
   getVideoUrlScript: `
 window.ReactNativeWebView.postMessage(JSON.stringify({eventType: 'getVideoUrl', data: player.getVideoUrl()}));
 true;
@@ -65,6 +63,8 @@ true;
     return `player.${func}({videoId: ${JSON.stringify(videoId)}}); true;`;
   },
 
+  playVideo: () => 'player.playVideo(); true;',
+  pauseVideo: () => 'player.pauseVideo(); true;',
   unloadModule: moduleName => {
     return `player.unloadModule("${moduleName}"); true;`;
   },
