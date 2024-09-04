@@ -80,6 +80,12 @@ const YoutubeIframe = (props, ref) => {
           eventEmitter.current.once('getCurrentTime', resolve);
         });
       },
+      getPlayerState: () => {
+        webViewRef.current.injectJavaScript(PLAYER_FUNCTIONS.currentTimeScript);
+        return new Promise(resolve => {
+          eventEmitter.current.once('getPlayerState', resolve);
+        });
+      },
       isMuted: () => {
         webViewRef.current.injectJavaScript(PLAYER_FUNCTIONS.isMutedScript);
         return new Promise(resolve => {
@@ -112,6 +118,12 @@ const YoutubeIframe = (props, ref) => {
         webViewRef.current.injectJavaScript(
           PLAYER_FUNCTIONS.seekToScript(seconds, allowSeekAhead),
         );
+      },
+      playVideo: () => {
+        webViewRef.current.injectJavaScript(PLAYER_FUNCTIONS.playVideo());
+      },
+      pauseVideo: () => {
+        webViewRef.current.injectJavaScript(PLAYER_FUNCTIONS.pauseVideo());
       },
       unloadModule: moduleName => {
         webViewRef.current.injectJavaScript(

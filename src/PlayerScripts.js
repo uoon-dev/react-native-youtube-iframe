@@ -33,7 +33,6 @@ true;
 window.ReactNativeWebView.postMessage(JSON.stringify({eventType: 'getAvailablePlaybackRates', data: player.getAvailablePlaybackRates()}));
 true;
 `,
-
   setVolume: volume => {
     return `player.setVolume(${volume}); true;`;
   },
@@ -68,6 +67,9 @@ true;
 
   unloadModule: moduleName => {
     return `player.unloadModule("${moduleName}"); true;`;
+  },
+  getPlayerState: () => {
+    return `player.getPlayerState(); true;`;
   },
 };
 
